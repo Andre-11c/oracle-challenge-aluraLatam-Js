@@ -3,37 +3,55 @@ let amigos = [];
 
 // Función para agregar un amigo a la lista
 function agregarAmigo() {
-    // Capturar el valor del campo de entrada
     let input = document.getElementById("amigo");
     let nombre = input.value.trim(); // Eliminar espacios en blanco al inicio y al final
 
     // Validar la entrada
     if (nombre === "") {
         alert("Por favor, inserte un nombre.");
-        return; // Salir de la función si el campo está vacío
+        return;
     }
 
     // Actualizar el array de amigos
     amigos.push(nombre);
 
+    // Actualizar la lista en pantalla
+    actualizarListaAmigos();
+
     // Limpiar el campo de entrada
     input.value = "";
 }
 
+// Escuchar el evento "keydown" en el campo de entrada
+document.getElementById("amigo").addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+        event.preventDefault(); // Evita el comportamiento por defecto (ejemplo: envío de formularios)
+        agregarAmigo(); // Llamar a la función para agregar el amigo
+    }
+});
+
+// Función para actualizar la lista de amigos en pantalla
+function actualizarListaAmigos() {
+    let lista = document.getElementById("listaAmigos");
+    lista.innerHTML = ""; // Limpiar la lista antes de actualizar
+
+    // Recorrer el array y agregar cada amigo a la lista
+    amigos.forEach((amigo) => {
+        let li = document.createElement("li");
+        li.textContent = amigo;
+        lista.appendChild(li);
+    });
+}
+
 // Función para sortear un amigo aleatoriamente
 function sortearAmigo() {
-    // Validar que haya amigos disponibles
     if (amigos.length === 0) {
         alert("No hay amigos en la lista para sortear.");
-        return; // Salir de la función si el array está vacío
+        return;
     }
 
-    // Generar un índice aleatorio
     let indiceAleatorio = Math.floor(Math.random() * amigos.length);
-
-    // Obtener el nombre sorteado
     let amigoSorteado = amigos[indiceAleatorio];
 
-    // Mostrar el resultado
     document.getElementById("resultado").innerHTML = `<li>${amigoSorteado}</li>`;
 }
